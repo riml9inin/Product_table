@@ -1,0 +1,46 @@
+<apex:page controller="Product_List_Controller">
+    <apex:slds />  
+    <style>
+        .img	{text-align: center;}
+        .title	{margin-right: 20px;}
+
+    </style>    
+    
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!product_tbl}" var="tbl"> 
+            
+            <apex:column width="250" headerValue="IMAGE">
+                <div class="img">
+                    <img  hight="350" id="theImage" src="{!tbl.Image_Url__c}" alt="{!tbl.Name}"/>
+                </div> 
+            </apex:column>
+            
+            <apex:column width="100">                
+                <a href="{!URLFOR($Page.descriptionPage, null, [Id=tbl.Id])}" target="_blank">{!tbl.Name}</a>
+            </apex:column>
+            
+            <apex:column width="350" headerValue="TITLE">
+                <div class="title" value="">
+                    {!tbl.Title__c}
+                </div>
+            </apex:column>
+            
+            <apex:column width="600" headerValue="DESCRIPTION">
+                {!IF(LEN(tbl.Product_Description__c) > 100, LEFT(tbl.Product_Description__c, 100) + '...', tbl.Product_Description__c)}
+                
+                <apex:outputLink value="{!URLFOR($Page.descriptionPage, null, [Id=tbl.Id])}" target="_blank">
+                    {!IF(LEN(tbl.Product_Description__c) > 100, 'More', '')}   
+                </apex:outputLink>      
+            </apex:column>                
+            
+            <apex:column width="120" headerValue="PRICE" value="{!tbl.Unit_Price__c}"/>
+            
+            <apex:column width="150">   
+                <form action="/apex/buyPage">
+                    <button class="slds-button slds-button_brand" name="id" value="{!tbl.Id}">buy</button> 
+                </form>
+            </apex:column> 
+         
+        </apex:pageBlockTable>   
+	</apex:pageBlock>   
+</apex:page>
